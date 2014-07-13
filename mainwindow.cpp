@@ -11,6 +11,11 @@
 #include "sprite.h"
 #include "frame.h"
 
+static const int KEY_UP = 16777235;
+static const int KEY_DOWN = 16777237;
+static const int KEY_LEFT = 16777234;
+static const int KEY_RIGHT = 16777236;
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -24,9 +29,9 @@ MainWindow::MainWindow(QWidget *parent) :
     m_painter = new QPainter(this);
 
     Position position = {0., 0.};
-    Size size = {38., 38.};
+    Size size = {48., 64.};
 
-    m_goofy = new Goofy(position, size, ":goofy.png");
+    m_goofy = new Goofy(position, size, ":sprites.png");
 }
 
 MainWindow::~MainWindow()
@@ -46,25 +51,26 @@ void MainWindow::paintEvent(QPaintEvent *event)
 void MainWindow::keyPressEvent(QKeyEvent *event)
 {
     //qDebug() << tolower(event->key());
+    Direction dir = RIGHT;
+
     switch (tolower(event->key()))
     {
-        case 16777235:
-            m_goofy->moveFrame(UP);
-            m_goofy->move(UP);
+        case KEY_UP:
+            dir = UP;
             break;
-        case 16777237:
-            m_goofy->moveFrame(DOWN);
-            m_goofy->move(DOWN);
+        case KEY_DOWN:
+            dir = DOWN;
             break;
-        case 16777234:
-            m_goofy->moveFrame(LEFT);
-            m_goofy->move(LEFT);
+        case KEY_LEFT:
+            dir = LEFT;
             break;
-        case 16777236:
-            m_goofy->moveFrame(RIGHT);
-            m_goofy->move(RIGHT);
+        case KEY_RIGHT:
+            dir = RIGHT;
             break;
     }
+
+    m_goofy->moveFrame(dir);
+    m_goofy->move(dir);
 }
 
 void MainWindow::keyReleaseEvent(QKeyEvent *event)
@@ -74,10 +80,5 @@ void MainWindow::keyReleaseEvent(QKeyEvent *event)
 
 void MainWindow::update()
 {
-    if (m_goofy->isMoving() == true)
-    {
-        m_goofy->frame()->next();
-    }
-
     repaint();
 }
