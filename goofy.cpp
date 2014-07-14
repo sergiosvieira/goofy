@@ -37,10 +37,19 @@ void Goofy::move(Direction a_direction)
     m_moving = true;
 }
 
+void Goofy::move()
+{
+    if (m_moving)
+    {
+        float speed = 3.5;
+
+        m_position.x += m_direction == RIGHT ? speed : (m_direction == LEFT ? -speed : 0);
+        m_position.y += m_direction == DOWN ? speed : (m_direction == UP ? -speed : 0);
+    }
+}
+
 void Goofy::moveFrame(Direction a_direction)
 {
-    m_moving = true;
-
     if (a_direction != m_lastDirection)
     {
         int first = kAnimationFrames[a_direction].x;
@@ -53,9 +62,27 @@ void Goofy::moveFrame(Direction a_direction)
     this->frame()->next();
 }
 
+void Goofy::moveFrame()
+{
+    if (m_moving)
+    {
+        if (m_direction != m_lastDirection)
+        {
+            int first = kAnimationFrames[m_direction].x;
+            int last = kAnimationFrames[m_direction].y;
+
+            m_frame->updateFrame(first, last, first);
+            m_lastDirection = m_direction;
+        }
+
+        this->frame()->next();
+    }
+}
+
 void Goofy::stand()
 {
     m_moving = false;
+
     int first = kAnimationFrames[m_lastDirection].x;
     int last = kAnimationFrames[m_lastDirection].y;
 
@@ -66,6 +93,17 @@ bool Goofy::isMoving()
 {
     return m_moving;
 }
+Direction Goofy::direction() const
+{
+    return m_direction;
+}
+
+void Goofy::setDirection(const Direction &direction)
+{
+    m_moving = true;
+    m_direction = direction;
+}
+
 
 Frame *Goofy::frame()
 {

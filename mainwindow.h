@@ -4,6 +4,7 @@
 #include <QMainWindow>
 
 class QTimer;
+class QTime;
 class QPainter;
 class Goofy;
 
@@ -24,9 +25,11 @@ public slots:
     void keyReleaseEvent(QKeyEvent *event);
 private:
     Ui::MainWindow *ui;
-    QPainter * m_painter;
-    QTimer * m_timer;
-    Goofy * m_goofy;
+    QPainter *m_painter;
+    QTimer *m_timer;
+    QTime *m_tickTime;
+    int m_nextGameTick;
+    Goofy  *m_goofy;
 private slots:
     void update();
 };
