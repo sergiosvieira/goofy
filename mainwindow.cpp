@@ -50,7 +50,6 @@ void MainWindow::paintEvent(QPaintEvent *event)
 
 void MainWindow::keyPressEvent(QKeyEvent *event)
 {
-    //qDebug() << tolower(event->key());
     Direction dir = RIGHT;
 
     switch (tolower(event->key()))
@@ -71,6 +70,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
 
     m_goofy->moveFrame(dir);
     m_goofy->move(dir);
+    repaint();
 }
 
 void MainWindow::keyReleaseEvent(QKeyEvent *event)
